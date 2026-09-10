@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>VR Landing Intelligence Monitor</title>
+  <style>
+    :root{
+      --paper:#ffffff;--canvas:#f5f3ef;--ink:#20272d;--muted:#68747c;
+      --line:#d8d4cc;--line-dark:#aaa69e;--accent:#8f2f3f;--accent-dark:#69212d;
+      --accent-soft:#f7e9ec;--gold:#a67420;--gold-soft:#f7f0df;--olive:#6e783f;
+      --charcoal:#59636a;--shadow:0 10px 30px rgba(35,31,26,.08)
+    }
+    *{box-sizing:border-box}
+    html{background:var(--canvas)}
+    body{margin:0;min-height:100vh;background:var(--canvas);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    button,select,input{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none!important}
+    .page{min-height:100vh}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{display:grid;place-items:center;width:38px;height:38px;border:2px solid var(--accent);border-radius:50%;font:800 15px Georgia,serif;color:var(--accent);background:var(--paper)}
+    .brand-name{font-size:14px;font-weight:800;letter-spacing:.02em}
+    .brand-sub{margin-top:2px;color:var(--muted);font-size:9px;letter-spacing:.12em;text-transform:uppercase}
+    .eyebrow{color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+    .setup-page{display:flex;flex-direction:column;background:linear-gradient(115deg,#fff 0,#fff 55%,#f5f1eb 55%,#f5f1eb 100%)}
+    .setup-top{display:flex;justify-content:space-between;align-items:center;padding:18px 34px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.94)}
+    .steps{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;font-weight:700}
+    .step{display:flex;align-items:center;gap:6px}.step-number{display:grid;place-items:center;width:22px;height:22px;border:1px solid var(--line-dark);border-radius:50%;font-size:10px}.step.active{color:var(--accent)}.step.active .step-number{border-color:var(--accent);background:var(--accent);color:#fff}.step-line{width:32px;height:1px;background:var(--line-dark)}
+    .setup-shell{width:min(1420px,calc(100% - 48px));margin:auto;display:grid;grid-template-columns:minmax(280px,.75fr) minmax(620px,1.55fr);gap:44px;align-items:center;padding:32px 0}
+    .setup-copy{padding:18px 10px}.setup-copy h1{max-width:560px;margin:9px 0 14px;font:700 clamp(34px,4vw,56px)/1.04 Georgia,"Times New Roman",serif;color:#25221e}.setup-copy p{max-width:520px;margin:0;color:var(--muted);font-size:15px;line-height:1.65}
+    .setup-card{padding:24px 26px}.setup-card-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding-bottom:15px;border-bottom:1px solid var(--line)}.setup-card h2{margin:2px 0 4px;font-size:21px}.setup-card-head p{margin:0;color:var(--muted);font-size:11px}.protocol-badge{flex:none;padding:6px 9px;border:1px solid #d9bdc3;border-radius:999px;background:var(--accent-soft);color:var(--accent-dark);font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 14px;margin-top:16px}.field.wide{grid-column:span 2}.field.full{grid-column:1/-1}.field label,.field-label{display:block;margin-bottom:6px;color:#555f65;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.field select,.field input{width:100%;height:39px;border:1px solid #c9c5bd;border-radius:7px;background:#fff;color:var(--ink);padding:0 10px;font-size:12px;outline:none}.field select:focus,.field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+    .window-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.signal-section{margin-top:16px;padding-top:15px;border-top:1px solid var(--line)}.signal-heading{display:flex;justify-content:space-between;gap:14px;align-items:end}.signal-heading small{color:var(--muted);font-size:9px}.signal-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}.choice{display:flex;align-items:center;gap:7px;min-height:34px;padding:7px 8px;border:1px solid #d7d3cb;border-radius:7px;background:#fbfaf8;color:#444e54;font-size:10px}.choice:has(input:checked){border-color:#bd7f89;background:var(--accent-soft);color:var(--accent-dark)}.choice.off{opacity:.35}.choice input{margin:0;accent-color:var(--accent)}
+    .setup-actions{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:14px;align-items:end;margin-top:18px}.llm{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:10px}.llm input{accent-color:var(--accent)}.primary{width:100%;height:43px;border:0;border-radius:7px;background:var(--accent);color:#fff;font-size:12px;font-weight:800;letter-spacing:.02em}.primary:hover{background:var(--accent-dark)}.primary:disabled{opacity:.55;cursor:wait}.runtime{margin-top:12px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:#faf9f7;color:var(--muted);font-size:9px;line-height:1.35}.runtime.good{border-color:#9ba77c;background:#f2f4ec;color:#4f5a30}.runtime.busy{border-color:#d2b170;background:var(--gold-soft);color:#725419}.runtime.bad{border-color:#ca8994;background:var(--accent-soft);color:var(--accent-dark)}.pulse{display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:currentColor}
+    .results-page{background:var(--canvas)}.results-top{display:flex;justify-content:space-between;align-items:center;min-height:62px;padding:10px 22px;border-bottom:1px solid var(--line);background:#fff}.results-title{min-width:0}.results-title h1{margin:0;font-size:17px}.results-context{margin-top:3px;color:var(--muted);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.results-actions{display:flex;align-items:center;gap:8px}.status-chip{max-width:340px;padding:6px 9px;border:1px solid #c8c3ba;border-radius:999px;background:#faf9f7;color:#59646b;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.secondary{width:auto;height:33px;padding:0 11px;border:1px solid #bbb6ad;border-radius:6px;background:#fff;color:#374047;font-size:10px;font-weight:750}.secondary:hover{border-color:var(--accent);color:var(--accent)}
+    .results-shell{width:min(1680px,calc(100% - 28px));margin:0 auto;padding:12px 0 14px;display:grid;gap:10px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.metric{min-height:76px;padding:12px 14px;border-top:3px solid #b9b4aa}.metric.key{border-top-color:var(--accent)}.metric .k{color:var(--muted);font-size:8px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.metric .v{margin-top:4px;font-size:22px;font-weight:800;line-height:1.05}.metric .s{margin-top:4px;color:var(--muted);font-size:9px}.accent{color:var(--accent)}
+    .analysis-grid{display:grid;grid-template-columns:minmax(340px,.72fr) minmax(0,1.58fr);gap:10px;align-items:stretch}.compact-stack{display:grid;grid-template-rows:auto 1fr;gap:10px}.content{padding:12px 14px;min-width:0}.head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}.head h2,.head h3{margin:0;font-size:12px}.head span{max-width:58%;color:var(--muted);font-size:8px;text-align:right}.gauge{display:flex;height:13px;border:1px solid #c5c0b7;border-radius:99px;overflow:hidden;background:#e8e5df}.easy{background:#dedad2}.hard{background:var(--accent)}.glabels{display:flex;justify-content:space-between;margin-top:5px;color:var(--muted);font-size:8px}
+    .barrow{display:grid;grid-template-columns:126px minmax(38px,1fr) 48px;gap:7px;align-items:center;margin:5px 0;font-size:9px}.barrow>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.track{height:7px;border-radius:8px;background:#ece9e3;overflow:hidden}.fill{height:100%;border-radius:8px;background:var(--olive)}.driver .fill.pos{background:var(--accent)}.driver .fill.neg{background:var(--charcoal)}.driver small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.empty{padding:18px;border:1px dashed #c4bfb6;border-radius:7px;color:var(--muted);text-align:center;font-size:9px}
+    .waterfall{padding:11px 12px;min-width:0}.waterfall-frame{height:320px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:#fff}.waterfall-frame img{display:block;width:100%;height:100%;object-fit:contain}.waterfall-note{margin-top:7px;color:var(--muted);font-size:8px;line-height:1.4}.waterfall-note b{color:var(--ink)}.method-chip{display:inline-block;padding:4px 7px;border:1px solid #aaa69e;border-radius:999px;background:#f6f4f0;color:#4e585e}.method-chip.approx{border-color:#ccb37c;background:var(--gold-soft);color:#71521b}
+    .support-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);gap:10px;align-items:stretch}.signals{padding:11px 12px;min-width:0}.signal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.signal-card{min-width:0;padding:7px 8px;border:1px solid var(--line);border-radius:7px;background:#fff}.signal-title{display:flex;justify-content:space-between;gap:8px;align-items:start}.signal-title b{font-size:9px}.signal-title span{color:var(--muted);font-size:7px;text-align:right}.legend{display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 1px;color:var(--muted);font-size:7px}.legend i{display:inline-block;width:10px;height:2px;margin-right:3px;vertical-align:middle}.signal-card canvas{display:block;width:100%;height:104px;background:#fff}.signal-empty{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted);font-size:9px}
+    .evidence-card{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0}.evidence-body{display:grid;grid-template-columns:1fr;gap:9px;min-height:0}.narrative{padding-left:10px;border-left:3px solid var(--accent);line-height:1.35}.narrative h2{margin:0 0 5px;font:700 14px/1.15 Georgia,"Times New Roman",serif}.narrative p{margin:4px 0;color:#4f5a60;font-size:8px}.narrative .caution{color:#7a5b28}.narrative details{margin-top:6px;color:var(--muted);font-size:8px}.modality-mini{padding-top:7px;border-top:1px solid var(--line)}.modality-mini .barrow{grid-template-columns:105px minmax(30px,1fr) 35px;margin:3px 0;font-size:8px}
+    .foot{display:flex;justify-content:space-between;color:#868d91;font-size:7px;padding:0 2px}.loading{opacity:.58;pointer-events:none}
+    @media(max-width:1050px){.setup-shell{grid-template-columns:1fr;width:min(760px,calc(100% - 28px));gap:10px;padding:22px 0}.setup-copy{padding:0}.setup-copy h1{font-size:36px}.analysis-grid,.support-grid{grid-template-columns:1fr}.waterfall-frame{height:auto;min-height:270px}.results-shell{width:min(900px,calc(100% - 24px))}}
+    @media(max-width:700px){.setup-top,.results-top{padding:12px 14px}.steps,.status-chip{display:none}.setup-shell{width:calc(100% - 20px)}.setup-card{padding:18px}.form-grid{grid-template-columns:1fr 1fr}.field.wide{grid-column:span 1}.signal-choices{grid-template-columns:1fr 1fr}.setup-actions{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.signal-grid{grid-template-columns:1fr}.results-shell{width:calc(100% - 16px)}.analysis-grid{grid-template-columns:1fr}.foot{display:none}}
+    @media print{
+      @page{size:A4 landscape;margin:7mm}
+      html,body{background:#fff}.setup-page{display:none!important}.results-page{display:block!important}.results-top{min-height:40px;padding:4px 0}.screen-only{display:none!important}.results-shell{width:100%;padding:5px 0;gap:6px}.panel{box-shadow:none;border-color:#bbb}.metrics,.analysis-grid,.support-grid{gap:6px}.metric{min-height:60px;padding:8px 10px}.metric .v{font-size:18px}.content,.signals,.waterfall{padding:8px}.waterfall-frame{height:245px}.signal-card canvas{height:76px}.signal-grid{gap:4px}.foot{display:none}
+    }
+  </style>
+</head>
+<body>
+  <section id="setupPage" class="page setup-page">
+    <header class="setup-top">
+      <div class="brand"><div class="brand-mark">VR</div><div><div class="brand-name">Landing Intelligence Monitor</div><div class="brand-sub">TabFM ensemble · research prototype</div></div></div>
+      <div class="steps" aria-label="Two-step workflow"><span class="step active"><span class="step-number">1</span>Configure</span><span class="step-line"></span><span class="step"><span class="step-number">2</span>Results</span></div>
+    </header>
+    <main class="setup-shell">
+      <section class="setup-copy">
+        <div class="eyebrow">Post-session flight analytics</div>
+        <h1>Configure one pilot session for validation.</h1>
+        <p>Select the held-out session, signal interval, and up to four physiological modalities.</p>
+      </section>
+      <section class="panel setup-card" aria-label="Session configuration">
+        <div class="setup-card-head"><div><div class="eyebrow">Step 1 of 2</div><h2>Session configuration</h2><p>Choose the evidence to include in the validation view.</p></div><span class="protocol-badge">OOF validation</span></div>
+        <div class="form-grid">
+          <div class="field"><label for="task">Analysis task</label><select id="task"><option value="classification">Flight difficulty</option><option value="regression">Landing performance</option></select></div>
+          <div class="field"><label for="pilot">Pilot</label><select id="pilot"></select></div>
+          <div class="field"><label for="session">Session run</label><select id="session"></select></div>
+          <div class="field wide"><label for="shapCase">Completed direct SHAP runs</label><select id="shapCase"><option value="">Use selected pilot and run</option></select></div>
+          <div class="field"><label>Signal window</label><div class="window-grid"><input id="signalStart" type="number" min="0" step="1" value="0" title="Start time in seconds"><select id="signalDuration" title="Window duration"><option value="10">10 seconds</option><option value="30" selected>30 seconds</option><option value="60">60 seconds</option><option value="120">120 seconds</option><option value="300">300 seconds</option></select></div></div>
+        </div>
+        <div class="signal-section">
+          <div class="signal-heading"><div><span class="field-label">Signals to include</span><small id="signalMeta">Availability is checked for the selected session.</small></div><small id="signalLimit">Select 1–4 panels for the compact results page.</small></div>
+          <div id="signalChoices" class="signal-choices"></div>
+        </div>
+        <div class="setup-actions">
+          <label class="llm"><input id="llm" type="checkbox"> Add guarded LLM paraphrase to the evidence summary</label>
+          <button id="analyze" class="primary">Validate session →</button>
+        </div>
+        <label class="llm"><input id="savePng" type="checkbox"> Save PNG screenshots of this validation</label>
+        <div id="runtime" class="runtime"><span class="pulse"></span>Loading saved evidence sources…</div>
+      </section>
+    </main>
+  </section>
+
+  <section id="resultsPage" class="page results-page hidden">
+    <header class="results-top">
+      <div class="brand"><div class="brand-mark">VR</div><div class="results-title"><h1>Session validation summary</h1><div id="resultsContext" class="results-context">Held-out TabFM result</div></div></div>
+      <div class="results-actions screen-only"><span id="resultsStatus" class="status-chip">Saved OOF evidence</span><button id="backToSetup" class="secondary">← New validation</button></div>
+    </header>
+    <main id="main" class="results-shell">
+      <section class="metrics">
+        <div class="panel metric"><div class="k">Pilot / run</div><div class="v" id="mSession">—</div><div class="s" id="mFold">Outer fold —</div></div>
+        <div class="panel metric key"><div class="k" id="mOutputLabel">TabFM prediction</div><div class="v accent" id="mPrediction">—</div><div class="s">32-member saved OOF ensemble</div></div>
+        <div class="panel metric"><div class="k" id="mConfidenceLabel">Probability</div><div class="v" id="mConfidence">—</div><div class="s" id="mProbability">Model confidence</div></div>
+        <div class="panel metric"><div class="k">Observed outcome</div><div class="v" id="mObserved">—</div><div class="s" id="mError">Held-out comparison</div></div>
+      </section>
+
+      <section class="analysis-grid">
+        <div class="compact-stack">
+          <article class="panel content"><div class="head"><h3>Prediction profile</h3><span>TabFM ensemble · 32 estimators</span></div><div id="predictionViz"></div></article>
+          <article class="panel content"><div class="head"><h3>Strongest local SHAP drivers</h3><span id="driversMethod">Saved local SHAP</span></div><div id="drivers"></div></article>
+        </div>
+        <article class="panel waterfall"><div class="head"><h2>Individual-run SHAP waterfall</h2><span id="waterfallMethod" class="method-chip">Saved local explanation</span></div><div id="waterfallPlot" class="waterfall-frame"><div class="empty">A local additive explanation will appear for a SHAP-covered run.</div></div><div id="waterfallNote" class="waterfall-note">The waterfall bridges the saved SHAP baseline to the reconstructed output.</div></article>
+      </section>
+
+      <section class="support-grid">
+        <article class="panel signals"><div class="head"><h2>Selected physiological signal window</h2><span id="signalWindowLabel">Selected interval</span></div><div id="signalGrid" class="signal-grid"><div class="signal-empty">Signal plots will appear after validation.</div></div></article>
+        <article class="panel content evidence-card"><div class="head"><h2>Evidence summary</h2><span id="narrativeMode">Deterministic evidence card</span></div><div class="evidence-body"><div id="narrative" class="narrative"></div><div class="modality-mini"><div class="head"><h3>Modality deviation overview</h3><span>Top four standardized deviations</span></div><div id="modalities"></div></div></div></article>
+      </section>
+      <div class="foot"><span>Research prototype · held-out sample-level OOF evidence</span><span>SHAP describes model behavior, not physiological causality</span></div>
+    </main>
+  </section>
+
+  <script>
+    const MODALITIES=['Respiration','PPG','Head Movement','Forearm Accel.','EMG','ECG/HRV','Eye Movement','Torso Accel.','EDA'];
+    const COLORS=['#8f2f3f','#a67420','#6e783f','#59636a'];
+    const MAX_SIGNALS=4;
+    const EXPORT_WIDTH=1600;
+    const EXPORT_HEIGHT=900;
+    const EXPORT_SCALE=2;
+    let catalog=[],shapCases=[],signalInfo=null,runtimeInfo=null,lastSignalPayload=null;
+    const el=id=>document.getElementById(id);
+    function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function showPage(name){el('setupPage').classList.toggle('hidden',name!=='setup');el('resultsPage').classList.toggle('hidden',name!=='results');window.scrollTo({top:0,behavior:'auto'});}
+    function runtime(message,kind=''){el('runtime').className='runtime '+kind;el('runtime').innerHTML=`<span class="pulse"></span>${esc(message)}`;if(el('resultsStatus'))el('resultsStatus').textContent=message;}
+    async function loadCatalog(){const task=el('task').value,response=await fetch('/api/catalog?task='+task);catalog=await response.json();if(!response.ok)throw new Error(catalog.error||`HTTP ${response.status}`);const pilots=[...new Set(catalog.map(x=>String(x.subject)))];el('pilot').innerHTML=pilots.map(x=>`<option>${esc(x)}</option>`).join('');loadSessions();}
+    function loadSessions(){const p=el('pilot').value,rows=catalog.filter(x=>String(x.subject)===p);el('session').innerHTML=rows.map(x=>`<option value="${x.source_excel_row}">Run ${esc(x.run)} · level ${esc(x.level)}</option>`).join('');}
+    async function loadShapCases(){const response=await fetch('/api/shap/cases?task='+el('task').value);shapCases=await response.json();if(!response.ok)throw new Error(shapCases.error||`HTTP ${response.status}`);el('shapCase').innerHTML='<option value="">Use selected pilot and run</option>'+shapCases.map(x=>`<option value="${x.source_excel_row}">P${esc(x.subject)} · Run ${esc(x.run)} · L${esc(x.level)} · ${x.is_approximation?'fast representative':'direct ensemble'}</option>`).join('');}
+    async function loadSignalInfo(){if(!el('session').value)return;const params=new URLSearchParams({task:el('task').value,row:el('session').value}),response=await fetch('/api/raw-signals/info?'+params);signalInfo=await response.json();if(!response.ok)signalInfo={available_modalities:[],estimated_duration_seconds:null,warning:signalInfo.error};const available=new Set(signalInfo.available_modalities),defaults=['Respiration','PPG','ECG/HRV','EDA'];let selected=defaults.filter(x=>available.has(x)).slice(0,MAX_SIGNALS);for(const value of MODALITIES){if(selected.length>=MAX_SIGNALS)break;if(available.has(value)&&!selected.includes(value))selected.push(value);}el('signalChoices').innerHTML=MODALITIES.map(m=>`<label class="choice ${available.has(m)?'':'off'}"><input type="checkbox" value="${esc(m)}" ${selected.includes(m)?'checked':''} ${available.has(m)?'':'disabled'}><span>${esc(m)}</span></label>`).join('');const duration=signalInfo.estimated_duration_seconds;if(duration!=null){el('signalStart').max=Math.max(0,Math.floor(duration-1));el('signalMeta').textContent=`Approximately ${duration.toFixed(0)} recorded seconds · ${available.size} modalities available`;}else el('signalMeta').textContent=`${available.size} modalities available for this session`;}
+    function selectedModalities(){return [...el('signalChoices').querySelectorAll('input:checked')].map(x=>x.value);}
+    function enforceSignalLimit(event){if(!event.target.matches('input[type=checkbox]'))return;const selected=selectedModalities();if(selected.length>MAX_SIGNALS){event.target.checked=false;el('signalLimit').textContent='Maximum four signal panels for the screenshot layout.';el('signalLimit').style.color='var(--accent)';}else{el('signalLimit').textContent=`${selected.length} of ${MAX_SIGNALS} signal panels selected.`;el('signalLimit').style.color='';}}
+    function modalityBars(rows){const shown=rows.slice(0,4),max=Math.max(...shown.map(x=>x.mean_absolute_standardized_deviation),.01);return shown.map(x=>`<div class="barrow"><span title="${esc(x.modality)}">${esc(x.modality)}</span><div class="track"><div class="fill" style="width:${100*x.mean_absolute_standardized_deviation/max}%"></div></div><b>${x.mean_absolute_standardized_deviation.toFixed(2)}</b></div>`).join('');}
+    function driverBars(rows){if(!rows.length)return '<div class="empty">No saved local SHAP exists for this run. Select a representative SHAP shortcut or precompute direct SHAP.</div>';const shown=rows.slice(0,5),max=Math.max(...shown.map(x=>Math.abs(x.shap_value)),.001);return shown.map(x=>`<div class="barrow driver"><span><b>${esc(x.modality)}</b><small title="${esc(x.feature)}">${esc(x.plain_feature||x.feature)}</small></span><div class="track"><div class="fill ${x.shap_value>=0?'pos':'neg'}" style="width:${100*Math.abs(x.shap_value)/max}%"></div></div><b>${x.shap_value>=0?'+':''}${x.shap_value.toFixed(3)}</b></div>`).join('');}
+    function outputLabel(task,value){return task==='classification'?`${(100*Number(value)).toFixed(1)}% hard probability`:Number(value).toLocaleString(undefined,{maximumFractionDigits:1})+' performance units';}
+    function renderWaterfall(e){const meta=e.shap_metadata||{},d=e.shap_decomposition||{},method=el('waterfallMethod');if(!e.shap_available){method.className='method-chip';method.textContent='No saved local SHAP';el('waterfallPlot').innerHTML='<div class="empty">No saved local SHAP values exist for this run. The prediction remains available, but no local attribution is inferred.</div>';el('waterfallNote').textContent='Run PRECOMPUTE_ALL_SHAP.ps1 to compute direct SHAP for every session. Completed runs become available as they are saved.';el('driversMethod').textContent='No saved local SHAP';return;}const approx=Boolean(meta.is_approximation),fidelity=meta.fidelity_r2==null?'':` · R² ${Number(meta.fidelity_r2).toFixed(3)}`;method.className='method-chip'+(approx?' approx':'');method.textContent=approx?'Fast TabFM approximation'+fidelity:'Direct ensemble SHAP';el('driversMethod').textContent=approx?'Fast representative approximation'+fidelity:'Direct fold-local permutation SHAP';const src=`/api/shap/waterfall.png?task=${encodeURIComponent(e.task)}&row=${encodeURIComponent(e.source_excel_row)}`;el('waterfallPlot').innerHTML=`<img src="${src}" alt="Individual-run SHAP waterfall for pilot ${esc(e.subject)}, run ${esc(e.run)}" onerror="this.parentElement.innerHTML='<div class=&quot;empty&quot;>The waterfall image could not be rendered.</div>'">`;const baseline=outputLabel(e.task,d.baseline_output),reconstructed=outputLabel(e.task,d.reconstructed_output),full=outputLabel(e.task,d.full_ensemble_output),residual=Number(d.reconstruction_difference||0),residualText=e.task==='classification'?`${(100*residual).toFixed(2)} percentage points`:residual.toLocaleString(undefined,{maximumFractionDigits:2})+' units';el('waterfallNote').innerHTML=approx?`<b>Approximate local explanation:</b> ${baseline} baseline → ${reconstructed} proxy reconstruction; saved ensemble output ${full}. Use direct SHAP for a final manuscript case study.`:`<b>Direct local explanation:</b> ${baseline} baseline → ${reconstructed} reconstruction; saved ensemble output ${full}${residual>1e-9?` · residual ${residualText}`:''}.`;}
+    function renderNarrative(n){const audit=n.llm_audit||{},lines=n.llm_paraphrase?n.llm_paraphrase.split(/\n+/).map(x=>x.trim()).filter(Boolean):[],drivers=(n.drivers||[]).slice(0,3),extra=(n.drivers||[]).slice(3);el('narrativeMode').textContent=n.llm_paraphrase?'Guarded LLM + deterministic evidence':'Deterministic evidence card';const expanded=[...extra,...lines],autoExpand=lines.length?' open data-export-open="true"':'';el('narrative').innerHTML=`<h2>${esc(n.headline)}</h2><p>${esc(n.summary)}</p>${drivers.map(x=>`<p>${esc(x)}</p>`).join('')}<p class="caution">${esc(n.caution||'SHAP describes model behavior, not physiological causality.')}</p>${expanded.length?`<details${autoExpand}><summary>Extended explanation</summary>${expanded.map(x=>`<p>${esc(x)}</p>`).join('')}</details>`:''}${el('llm').checked&&!n.llm_paraphrase?`<p><b>LLM status:</b> ${esc(audit.reason||'No paraphrase returned.')}</p>`:''}`;}
+    function renderEvidence(data){const e=data.evidence,p=e.prediction,task=e.task;el('resultsContext').textContent=`${task==='classification'?'Flight difficulty':'Landing performance'} · Pilot ${e.subject} · Run ${e.run} · Level ${e.level} · outer fold ${e.fold}`;el('mSession').textContent=`P${e.subject} · R${e.run}`;el('mFold').textContent=`Level ${e.level} · outer fold ${e.fold}`;if(task==='classification'){el('mOutputLabel').textContent='Predicted difficulty';el('mPrediction').textContent=p.predicted_class.toUpperCase();el('mConfidenceLabel').textContent='Hard-class probability';el('mConfidence').textContent=`${(100*p.probability_hard).toFixed(1)}%`;el('mProbability').textContent=`Easy ${(100*p.probability_easy).toFixed(1)}% · Hard ${(100*p.probability_hard).toFixed(1)}%`;el('mObserved').textContent=p.observed_class.toUpperCase();el('mError').textContent=p.correct?'Correct OOF classification':'Incorrect OOF classification';el('predictionViz').innerHTML=`<div class="gauge"><div class="easy" style="width:${100*p.probability_easy}%"></div><div class="hard" style="width:${100*p.probability_hard}%"></div></div><div class="glabels"><span>Easy ${(100*p.probability_easy).toFixed(1)}%</span><span>Hard ${(100*p.probability_hard).toFixed(1)}%</span></div>`;}else{const spread=p.member_prediction_sd;el('mOutputLabel').textContent='Predicted performance';el('mPrediction').textContent=Number(p.predicted_performance).toLocaleString(undefined,{maximumFractionDigits:1});el('mConfidenceLabel').textContent='Ensemble-member spread';el('mConfidence').textContent=spread==null?'—':`±${Number(spread).toFixed(1)}`;el('mProbability').textContent=spread==null?'Spread unavailable':'Uncalibrated member SD';el('mObserved').textContent=Number(p.observed_performance).toLocaleString(undefined,{maximumFractionDigits:1});el('mError').textContent=`Absolute OOF error ${Number(p.absolute_error).toFixed(1)}`;const scale=Math.max(p.observed_performance,p.predicted_performance,1),pred=100*p.predicted_performance/scale,obs=100*p.observed_performance/scale;el('predictionViz').innerHTML=`<div class="barrow"><span>Predicted</span><div class="track"><div class="fill" style="width:${pred}%;background:var(--accent)"></div></div><b>${Number(p.predicted_performance).toFixed(0)}</b></div><div class="barrow"><span>Observed</span><div class="track"><div class="fill" style="width:${obs}%;background:var(--charcoal)"></div></div><b>${Number(p.observed_performance).toFixed(0)}</b></div>`;}el('modalities').innerHTML=modalityBars(e.modality_snapshot);el('drivers').innerHTML=driverBars(e.top_shap_drivers);renderWaterfall(e);if(e.shap_available)el('waterfallNote').innerHTML+=` <a href="/api/shap/values.csv?task=${encodeURIComponent(e.task)}&row=${encodeURIComponent(e.source_excel_row)}">Download all feature contributions</a>`;renderNarrative(data.narrative);if([...el('shapCase').options].some(x=>x.value===String(e.source_excel_row)))el('shapCase').value=String(e.source_excel_row);return e;}
+    async function fetchEvidence(useLlm){const params=new URLSearchParams({task:el('task').value,row:el('session').value,llm:useLlm?'1':'0'}),response=await fetch('/api/evidence?'+params),data=await response.json();if(!response.ok||data.error)throw new Error(data.error||`HTTP ${response.status}`);return data;}
+    async function fetchSignals(){const modalities=selectedModalities();if(!modalities.length)return {plots:[],warnings:['No raw signal panels are available or selected.']};if(modalities.length>MAX_SIGNALS)throw new Error(`Select no more than ${MAX_SIGNALS} signal panels.`);const params=new URLSearchParams({task:el('task').value,row:el('session').value,start:el('signalStart').value,duration:el('signalDuration').value});modalities.forEach(value=>params.append('modality',value));const response=await fetch('/api/raw-signals/window?'+params),data=await response.json();if(!response.ok||data.error)throw new Error(data.error||`HTTP ${response.status}`);return data;}
+    function drawSignalChart(canvas,plot,start,duration){const rect=canvas.getBoundingClientRect(),dpr=Math.max(window.devicePixelRatio||1,EXPORT_SCALE),width=Math.max(260,rect.width),height=104;canvas.width=width*dpr;canvas.height=height*dpr;const c=canvas.getContext('2d');c.scale(dpr,dpr);c.fillStyle='#fff';c.fillRect(0,0,width,height);const pad={l:38,r:8,t:5,b:18},pw=width-pad.l-pad.r,ph=height-pad.t-pad.b,values=plot.series.flatMap(s=>s.y).filter(Number.isFinite);if(!values.length){c.fillStyle='#68747c';c.font='9px Segoe UI';c.fillText('No samples in this window',pad.l,30);return;}let ymin=Math.min(...values),ymax=Math.max(...values);if(ymin===ymax){ymin-=1;ymax+=1;}const extra=(ymax-ymin)*.08;ymin-=extra;ymax+=extra;c.strokeStyle='#e4e0d9';c.lineWidth=1;c.fillStyle='#757f85';c.font='7px Segoe UI';for(let i=0;i<=3;i++){const y=pad.t+ph*i/3;c.beginPath();c.moveTo(pad.l,y);c.lineTo(width-pad.r,y);c.stroke();c.fillText(Number(ymax-(ymax-ymin)*i/3).toPrecision(3),2,y+2);}for(let i=0;i<=3;i++){const x=pad.l+pw*i/3,time=start+duration*i/3;c.fillText(`${time.toFixed(0)}s`,x-6,height-4);}plot.series.forEach((s,idx)=>{if(!s.x.length)return;c.strokeStyle=COLORS[idx%COLORS.length];c.lineWidth=1.2;c.beginPath();let moved=false;for(let i=0;i<s.x.length;i++){const xv=pad.l+pw*(s.x[i]-start)/duration,yv=pad.t+ph*(ymax-s.y[i])/(ymax-ymin);if(!Number.isFinite(xv)||!Number.isFinite(yv))continue;if(!moved){c.moveTo(xv,yv);moved=true}else c.lineTo(xv,yv);}c.stroke();});c.strokeStyle='#bdb8af';c.strokeRect(pad.l,pad.t,pw,ph);}
+    function renderSignals(payload){lastSignalPayload=payload;const grid=el('signalGrid');if(!payload.plots.length){grid.innerHTML='<div class="signal-empty">No samples were found for the selected signals and window.</div>';return;}grid.innerHTML=payload.plots.map((plot,index)=>{const units=[...new Set(plot.series.map(s=>s.unit))].join(' · '),legend=plot.series.map((s,i)=>`<span><i style="background:${COLORS[i%COLORS.length]}"></i>${esc(s.name)}</span>`).join('');return `<div class="signal-card"><div class="signal-title"><b>${esc(plot.modality)}</b><span>${esc(units)} · ${plot.samples_in_window.toLocaleString()} samples</span></div><div class="legend">${legend}</div><canvas id="signalCanvas${index}" aria-label="${esc(plot.modality)} signal plot"></canvas></div>`;}).join('');payload.plots.forEach((plot,index)=>drawSignalChart(el('signalCanvas'+index),plot,payload.start_seconds,payload.duration_seconds));el('signalWindowLabel').textContent=`${payload.start_seconds.toFixed(0)}–${(payload.start_seconds+payload.duration_seconds).toFixed(0)} seconds · ${payload.plots.length} panels`;}
+    function nextPaint(){return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));}
+    function newExportId(){return new Date().toISOString().replace(/\D/g,'').slice(0,17);}
+    function blobToDataUrl(blob){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(reader.error||new Error('Could not encode image.'));reader.readAsDataURL(blob);});}
+    function copyFormState(source,clone){
+      const sourceFields=[...source.querySelectorAll('input,select,textarea')],cloneFields=[...clone.querySelectorAll('input,select,textarea')];
+      sourceFields.forEach((field,index)=>{const target=cloneFields[index];if(!target)return;if(field instanceof HTMLSelectElement){[...target.options].forEach((option,optionIndex)=>{if(field.options[optionIndex]?.selected)option.setAttribute('selected','');else option.removeAttribute('selected');});}else{target.setAttribute('value',field.value);if(field instanceof HTMLInputElement&&(field.type==='checkbox'||field.type==='radio')){if(field.checked)target.setAttribute('checked','');else target.removeAttribute('checked');}}});
+    }
+    function replaceCanvases(source,clone){
+      const sourceCanvases=[...source.querySelectorAll('canvas')],cloneCanvases=[...clone.querySelectorAll('canvas')];
+      sourceCanvases.forEach((canvas,index)=>{const target=cloneCanvases[index];if(!target)return;const image=document.createElement('img');image.src=canvas.toDataURL('image/png');image.alt=canvas.getAttribute('aria-label')||'Signal plot';image.className='export-canvas';target.replaceWith(image);});
+    }
+    async function inlineCloneImages(clone){
+      await Promise.all([...clone.querySelectorAll('img')].map(async image=>{if(!image.src||image.src.startsWith('data:'))return;const response=await fetch(image.src,{cache:'force-cache'});if(!response.ok)throw new Error(`Could not embed ${image.alt||'page image'}.`);image.src=await blobToDataUrl(await response.blob());}));
+    }
+    async function waitForPageImages(page){
+      await Promise.all([...page.querySelectorAll('img')].map(image=>{if(image.complete&&image.naturalWidth>0)return image.decode?image.decode().catch(()=>{}):Promise.resolve();return new Promise(resolve=>{const finish=()=>resolve();image.addEventListener('load',finish,{once:true});image.addEventListener('error',finish,{once:true});setTimeout(finish,15000);});}));
+    }
+    async function buildPageSnapshot(page){
+      await nextPaint();
+      const clone=page.cloneNode(true);
+      clone.classList.remove('hidden');
+      clone.querySelectorAll('.screen-only').forEach(node=>node.remove());
+      clone.querySelectorAll('details[data-export-open="true"]').forEach(details=>details.setAttribute('open',''));
+      clone.style.width=`${EXPORT_WIDTH}px`;
+      clone.style.height=`${EXPORT_HEIGHT}px`;
+      clone.style.minHeight=`${EXPORT_HEIGHT}px`;
+      clone.style.maxWidth='none';
+      clone.style.overflow='hidden';
+      copyFormState(page,clone);
+      replaceCanvases(page,clone);
+      await inlineCloneImages(clone);
+      const css=[...document.querySelectorAll('style')].map(style=>style.textContent).join('\n')+'\n.export-canvas{display:block;width:100%;height:104px;object-fit:fill}';
+      const markup=new XMLSerializer().serializeToString(clone);
+      return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=${EXPORT_WIDTH},initial-scale=1"><style>${css}</style></head><body>${markup}</body></html>`;
+    }
+    async function savePagePng(page,pageName,exportId){
+      const snapshot=await buildPageSnapshot(page),form=new FormData();
+      form.append('snapshot',new Blob([snapshot],{type:'text/html;charset=utf-8'}),`${pageName}.html`);form.append('page',pageName);form.append('task',el('task').value);form.append('row',el('session').value);form.append('export_id',exportId);
+      const response=await fetch('/api/export/png',{method:'POST',body:form}),result=await response.json();
+      if(!response.ok||result.error)throw new Error(result.error||`PNG export failed with HTTP ${response.status}.`);
+      return result;
+    }
+    let analyzing=false;
+    async function analyze(){
+      if(!el('session').value||analyzing)return;
+      analyzing=true;
+      const button=el('analyze'),exportId=newExportId(),exportErrors=[];
+      try{
+        if(el('savePng').checked){try{await savePagePng(el('setupPage'),'configuration',exportId);}catch(error){exportErrors.push(`configuration page: ${error.message}`);}}
+        button.disabled=true;button.textContent='Validating saved evidence…';runtime('Loading prediction, SHAP, and selected signal window…','busy');
+        const [evidence,signals]=await Promise.all([fetchEvidence(false),fetchSignals().catch(error=>({plots:[],warnings:[error.message]}))]);
+        renderEvidence(evidence);showPage('results');await nextPaint();renderSignals(signals);
+        runtimeInfo=await (await fetch('/api/runtime-status')).json();const coverage=runtimeInfo.shap_coverage[el('task').value];
+        runtime(`Validated · direct SHAP ${coverage.direct_rows}/${coverage.total_rows} · ${signals.plots.length} signal panels${signals.warnings?.length?' · '+signals.warnings.join('; '):''}`,'good');
+        if(el('llm').checked){
+          runtime('Results ready · requesting guarded LLM paraphrase…','busy');
+          const narrated=await fetchEvidence(true);renderNarrative(narrated.narrative);
+          const audit=narrated.narrative.llm_audit||{},usedModel=audit.resolved_model||audit.requested_model||runtimeInfo.llm_model;
+          runtime(audit.used?`Validated · LLM paraphrase generated with ${usedModel}`:(audit.reason||'Validated · deterministic explanation shown'),audit.used?'good':'bad');
+        }
+        await waitForPageImages(el('resultsPage'));
+        if(el('savePng').checked){try{const saved=await savePagePng(el('resultsPage'),'results',exportId);runtime(`Validated · high-resolution PNG pair saved in ${saved.directory}`,'good');}catch(error){exportErrors.push(`results page: ${error.message}`);}}
+        if(exportErrors.length){const message=`Validation completed, but PNG export failed for ${exportErrors.join('; ')}`;runtime(message,'bad');alert(message);}
+      }catch(error){showPage('setup');runtime(error.message,'bad');alert(error.message);}
+      finally{button.disabled=false;button.textContent='Validate session →';analyzing=false;}
+    }
+    async function loadRepresentativeCase(){const row=Number(el('shapCase').value);if(!row)return;const selected=catalog.find(x=>Number(x.source_excel_row)===row);if(!selected)throw new Error('Representative case is not present in the current task catalog.');el('pilot').value=String(selected.subject);loadSessions();el('session').value=String(row);await loadSignalInfo();runtime(`Direct SHAP case loaded: Pilot ${selected.subject}, Run ${selected.run}. Press Validate session.`,'good');}
+    async function initialize(){runtimeInfo=await (await fetch('/api/runtime-status')).json();el('llm').checked=Boolean(runtimeInfo.llm_ready);el('llm').disabled=!runtimeInfo.llm_ready;await loadCatalog();await loadShapCases();await loadSignalInfo();runtime('Ready · choose a session and validate the saved OOF evidence.','good');showPage('setup');}
+    el('signalChoices').addEventListener('change',enforceSignalLimit);
+    el('task').addEventListener('change',async()=>{await loadCatalog();await loadShapCases();await loadSignalInfo();runtime('Task updated · ready to validate.','good');});
+    el('pilot').addEventListener('change',async()=>{loadSessions();el('shapCase').value='';await loadSignalInfo();});
+    el('session').addEventListener('change',async()=>{el('shapCase').value='';await loadSignalInfo();});
+    el('shapCase').addEventListener('change',()=>loadRepresentativeCase().catch(error=>runtime(error.message,'bad')));
+    el('analyze').addEventListener('click',analyze);
+    el('backToSetup').addEventListener('click',()=>showPage('setup'));
+    let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(lastSignalPayload&&!el('resultsPage').classList.contains('hidden'))renderSignals(lastSignalPayload)},150)});
+    initialize().catch(error=>runtime(error.message,'bad'));
+  </script>
+</body>
+</html>

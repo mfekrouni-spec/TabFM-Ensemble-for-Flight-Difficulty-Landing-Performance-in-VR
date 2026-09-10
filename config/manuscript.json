@@ -1,0 +1,19 @@
+{
+  "tasks": ["classification", "regression"],
+  "models": ["xgboost", "random_forest", "knn", "tabfm_ensemble"],
+  "feature_set": "sensors_only",
+  "split_protocol": "paper_sample",
+  "folds": 5,
+  "inner_folds": 3,
+  "seed": 42,
+  "feature_selector": "mutual_info",
+  "feature_counts": [25, 50, 100, 150, 200],
+  "tuning_iterations": 24,
+  "selector_proxy_trees": 250,
+  "tabfm_estimators": 32,
+  "tabfm_batch_size": 1,
+  "tabfm_loader": "low_memory",
+  "bootstrap_samples": 2000,
+  "bootstrap_seed": 20260811,
+  "confidence_level": 0.95
+}

@@ -1,0 +1,16 @@
+# Install the appropriate PyTorch build first; see README.md.
+# Compatible target ranges, not a fully solved cross-platform lock.
+numpy>=2.0,<3
+pandas>=2.2,<4
+scipy>=1.14,<2
+scikit-learn>=1.6,<2
+xgboost>=3.0,<4
+tabfm==1.0.1
+shap>=0.51,<0.52
+Flask>=3.1,<4
+openai>=2,<4
+matplotlib>=3.9,<4
+openpyxl>=3.1,<4
+joblib>=1.4,<2
+safetensors>=0.6,<1
+huggingface-hub>=1.0,<2

@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "version": "1.0.0",
+  "repository_url": "https://github.com/mfekrouni-spec/TabFM-Ensemble-for-Flight-Difficulty-Landing-Performance-in-VR",
+  "modeling_source": {
+    "path": "tabfm_dual_task_optimized.py",
+    "description": "Single modeling implementation for the TabFM ensemble, XGBoost, random forest and KNN.",
+    "launcher": "run_benchmarks.py",
+    "configuration": "config/manuscript.json",
+    "checksums": "PACKAGE_SHA256.json"
+  },
+  "study_workbook_reference": {
+    "sha256": "1a3ab6454c3a32d5480e14b00adeb51304c440e29f50abf0c581b9f058328057",
+    "sheet": "data",
+    "rows": 419,
+    "columns": 450,
+    "predictors": 445,
+    "included": false,
+    "header_schema": "data/feature_schema.csv",
+    "raw_to_feature_extraction_code_included": false
+  },
+  "pretrained_model": {
+    "repository": "google/tabfm-1.0.0-pytorch",
+    "weights_included": false,
+    "study_hub_commit_recorded": false,
+    "download_provenance": "download_checkpoints.py records the resolved Hub commit and task file hashes."
+  },
+  "protocol": {
+    "outer_folds_per_task": 5,
+    "inner_folds": 3,
+    "seed": 42,
+    "cross_validation": "five-fold",
+    "tabfm_estimators": 32
+  },
+  "verification_report": "docs/VALIDATION.md"
+}

@@ -1,0 +1,19 @@
+{
+  "source_root": "benchmark_results",
+  "workbook": "data/sensors.xlsx",
+  "checkpoint_root": "checkpoints/tabfm-1.0.0-pytorch",
+  "checkpoint_repository": "google/tabfm-1.0.0-pytorch",
+  "checkpoint_revision": "main",
+  "raw_root": "data/raw/task-ils",
+  "results_root": "results",
+  "device": "auto",
+  "dtype": "auto",
+  "background_rows": 12,
+  "permutations": 10,
+  "prediction_batch_size": 32,
+  "seed": 42,
+  "prediction_rtol": 0.00001,
+  "classification_atol": 0.00001,
+  "regression_atol": 0.001,
+  "openrouter_model": "openrouter/free"
+}

@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "Citation metadata for the TabFM ensemble modeling and interpretation software."
+type: software
+title: "TabFM Ensemble for Flight Difficulty Classification and Landing Performance Prediction in Virtual Reality"
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/mfekrouni-spec/TabFM-Ensemble-for-Flight-Difficulty-Landing-Performance-in-VR"
+url: "https://github.com/mfekrouni-spec/TabFM-Ensemble-for-Flight-Difficulty-Landing-Performance-in-VR"
+abstract: >-
+  Research code for five-fold cross-validation of a 32-member TabFM
+  ensemble and XGBoost, random forest, and k-nearest-neighbor baselines for
+  flight-difficulty classification and landing-performance regression, with
+  direct permutation SHAP, constrained language-model summaries, and a local
+  graphical review application.
+authors:
+  - family-names: Fekrouni
+    given-names: Mohamed
+    affiliation: "Laboratory of Information and Communication Technologies (LabTIC), National School of Applied Sciences of Tangier, University of Abdelmalek Essaadi, Tangier, Morocco"
+    email: "m.fekrouni@uae.ac.ma"
+    orcid: "https://orcid.org/0009-0004-3934-4422"
+  - family-names: Chakkor
+    given-names: Saad
+    affiliation: "Laboratory of Information and Communication Technologies (LabTIC), National School of Applied Sciences of Tangier, University of Abdelmalek Essaadi, Tangier, Morocco"
+    email: "s.chakkor@uae.ac.ma"
+    orcid: "https://orcid.org/0000-0002-9609-7040"
+  - family-names: Baghouri
+    given-names: Mostafa
+    affiliation: "Laboratory of Complex Cyber Physical Systems (LCCPS), ENSAM, Hassan II University, Casablanca, Morocco"
+    email: "mostafa.baghouri@univh2c.ma"
+    orcid: "https://orcid.org/0000-0003-1545-1456"
+  - family-names: Laamech
+    given-names: Jawhar
+    affiliation: "Faculty of Medicine and Pharmacy, Laboratory of Chemistry and Biochemistry, University of Abdelmalek Essaadi, Tangier, Morocco"
+    email: "j.laamech@uae.ac.ma"
+    orcid: "https://orcid.org/0009-0005-1675-7985"
+contact:
+  - family-names: Fekrouni
+    given-names: Mohamed
+    email: "m.fekrouni@uae.ac.ma"
+    orcid: "https://orcid.org/0009-0004-3934-4422"
+keywords:
+  - tabular foundation model
+  - virtual reality
+  - aviation
+  - SHAP
+  - multimodal learning

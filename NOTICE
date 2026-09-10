@@ -1,0 +1,18 @@
+TabFM Ensemble for Flight Difficulty and Landing Performance in VR
+Copyright 2026 Mohamed Fekrouni, Saad Chakkor, Mostafa Baghouri, and Jawhar Laamech.
+
+This repository's study code and documentation are distributed under the
+MIT License. See LICENSE.
+
+This work uses Google Research's TabFM through the separately installed tabfm
+package. Upstream source: https://github.com/google-research/tabfm
+Upstream source-code license: Apache-2.0.
+
+Pretrained model weights are not included. The TabFM weight license is separate:
+https://huggingface.co/google/tabfm-1.0.0-pytorch
+This repository's license does not relicense pretrained weights, source data,
+third-party dependencies, or third-party services.
+
+The physiological source recordings belong to the CogPilot/PhysioNet resource
+cited in docs/DATA.md. They are not distributed with this repository. The feature
+schema contains names and descriptions, not participant data.
