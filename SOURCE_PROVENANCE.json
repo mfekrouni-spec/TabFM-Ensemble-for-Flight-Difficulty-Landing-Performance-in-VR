@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "version": "1.0.0",
-  "repository_url": "https://github.com/mfekrouni-spec/TabFM-Ensemble-for-Flight-Difficulty-Landing-Performance-in-VR",
+  "distribution": "Source package for double-anonymized peer review",
   "modeling_source": {
     "path": "tabfm_dual_task_optimized.py",
     "description": "Single modeling implementation for the TabFM ensemble, XGBoost, random forest and KNN.",

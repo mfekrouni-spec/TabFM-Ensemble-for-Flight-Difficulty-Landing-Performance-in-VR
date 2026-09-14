@@ -1,6 +1,6 @@
 # Data contract and access
 
-The modeling input is the study's tabular feature dataset, distributed separately from the source code. Dataset access, use conditions and feature-extraction information are available from the corresponding author, Mohamed Fekrouni (m.fekrouni@uae.ac.ma). The repository contains the column schema but no participant observations or example dataset.
+The modeling input is the study's tabular feature dataset, distributed separately from the source code. The input table must be supplied separately in accordance with the applicable data-access conditions. This source distribution contains the column schema but no participant observations or example dataset. Author-identifying contact details are withheld for peer review.
 
 The raw recordings originate from [A multimodal dataset for investigating working memory in a virtual reality piloting task, version 1.0.0](https://physionet.org/content/virtual-reality-piloting/1.0.0/), DOI [10.13026/azwa-ge48](https://doi.org/10.13026/azwa-ge48). Access is requested through PhysioNet under the dataset's terms. The modeling feature table and the raw recordings are separate inputs.
 

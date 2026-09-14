@@ -27,7 +27,7 @@ Command: `python -m unittest discover -s tests -v` from the repository root.
 | Actual numeric-token gate rejects an invented number with a mocked provider | Passed |
 | Benchmark resume guard rejects changed arguments | Passed |
 
-Additional checks cover Python syntax, JSON syntax, CFF YAML parsing and four-author metadata, PowerShell launcher syntax, and configuration consistency with both study run manifests. All compared configuration fields, excluding task/model lists, matched. Source-file hashes and ZIP member hashes are generated and verified by `package_release.py`.
+Additional checks cover Python syntax, JSON syntax, CFF YAML parsing, PowerShell launcher syntax, and configuration consistency with both study run manifests. All compared configuration fields, excluding task/model lists, matched. Source-file hashes and ZIP member hashes are generated and verified by `package_release.py`.
 
 ## Scope
 

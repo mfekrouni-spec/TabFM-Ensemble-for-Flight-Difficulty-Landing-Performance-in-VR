@@ -2,7 +2,7 @@
 
 Research software for flight-difficulty classification and landing-performance regression from multimodal sensor features. The modeling implementation is [tabfm_dual_task_optimized.py](tabfm_dual_task_optimized.py), which evaluates a 32-member TabFM ensemble against XGBoost, random forest and k-nearest neighbors (KNN). Supporting modules provide run-level SHAP explanations, optional language-model summaries and a graphical review application.
 
-**Authors:** Mohamed Fekrouni, Saad Chakkor, Mostafa Baghouri and Jawhar Laamech. [Affiliations and contacts](AUTHORS.md) · [Citation](CITATION.cff).
+Author-identifying metadata is withheld for double-anonymized peer review. [Citation metadata](CITATION.cff).
 
 ## Study protocol
 
@@ -21,7 +21,7 @@ The full settings are recorded in [config/manuscript.json](config/manuscript.jso
 
 ## Data
 
-The modeling workflow starts from the study's tabular feature dataset. The workbook is obtained separately from the corresponding author and is expected at `data/sensors.xlsx`, on a worksheet named `data`. [Data requirements](docs/DATA.md) describe access, column order and identifiers; [feature_schema.csv](data/feature_schema.csv) lists the 450 columns, including 445 predictors.
+The modeling workflow starts from the study's tabular feature dataset. The workbook must be supplied separately and is expected at `data/sensors.xlsx`, on a worksheet named `data`. [Data requirements](docs/DATA.md) describe access, column order and identifiers; [feature_schema.csv](data/feature_schema.csv) lists the 450 columns, including 445 predictors.
 
 Raw recordings are available through the [PhysioNet dataset access process](https://physionet.org/content/virtual-reality-piloting/1.0.0/). They are optional inputs for GUI sensor traces. The repository does not contain participant observations, pretrained weights or the raw-to-feature extraction pipeline.
 
@@ -164,4 +164,4 @@ The [verification report](docs/VALIDATION.md) records 16 passing software tests.
 
 ## License and citation
 
-Project code is distributed under the [MIT License](LICENSE); [NOTICE](NOTICE) identifies upstream components. TabFM source, model weights, research data and external services retain their respective terms. Citation metadata, author affiliations and ORCID identifiers are available in [CITATION.cff](CITATION.cff) and [AUTHORS.md](AUTHORS.md).
+Project code is distributed under the [MIT License](LICENSE); [NOTICE](NOTICE) identifies upstream components. TabFM source, model weights, research data and external services retain their respective terms. [CITATION.cff](CITATION.cff) contains citation metadata with author identities withheld for peer review.
