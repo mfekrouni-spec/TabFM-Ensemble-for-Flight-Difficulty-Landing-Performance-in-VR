@@ -29,9 +29,6 @@ flight_hours to both tasks and adds level to regression. Performance is never
 used to predict difficulty, and level is never used to predict performance in
 the default leakage-safe configuration.
 
-The default ``paper_sample`` split follows the project's paper-style protocol:
-sample-level five-fold CV with pilots allowed in both train and test.
-``grouped_pilot`` is available for the stricter unseen-pilot question.
 
 Fold predictions are saved immediately and compatible runs resume
 automatically. Pilot-cluster bootstrap confidence intervals and paired
